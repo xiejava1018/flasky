@@ -4,6 +4,12 @@ basedir=os.path.abspath(os.path.dirname(__file__))
 
 class Config:
     SECRET_KEY=os.environ.get('SECRET_KEY') or 'hard to guess string'
+    SQLALCHEMY_POOL_SIZE = 2
+    SQLALCHEMY_POOL_TIMEOUT = 30
+    SQLALCHEMY_POOL_RECYCLE = -1
+
+    # 追踪对象的修改并且发送信号
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     @staticmethod
     def init_app(app):
@@ -11,14 +17,15 @@ class Config:
 
 class DevelomentConfig(Config):
     DEBUG=True
-    SQLALCHEMY_DATABASE_URI='"mysql+pymysql://root:mnbvvbnm@192.168.1.101:3306/test?charset=utf8"'
+    SQLALCHEMY_DATABASE_URI="mysql+pymysql://root:mnbvvbnm@192.168.1.101:3306/flasky_devdb?charset=utf8"
+
 
 class TestingConfig(Config):
     TESTING=True
-    SQLALCHEMY_DATABASE_URI = '"mysql+pymysql://root:mnbvvbnm@192.168.1.101:3306/test?charset=utf8"'
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:mnbvvbnm@192.168.1.101:3306/flasky_testdb?charset=utf8"
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = '"mysql+pymysql://root:mnbvvbnm@192.168.1.101:3306/test?charset=utf8"'
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:mnbvvbnm@192.168.1.101:3306/flasky_db?charset=utf8"
 
 config={
     'development':DevelomentConfig,
