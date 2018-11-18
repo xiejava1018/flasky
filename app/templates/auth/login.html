@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}Flasky - 登录 {% endblock %}
+{% block page_content %}
+<div class="page-header">
+    <h1>登录</h1>
+</div>
+{% for message in get_flashed_messages() %}
+<div class="alert alert-warning">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {{message}}
+</div>
+{% endfor %}
+<div class="col-md-4">
+    {{wtf.quick_form(form)}}
+    <p>
+    没有账号?
+    <a href="{{ url_for('auth.register') }}">
+    点击这里注册
+    </a>
+    </p>
+</div>
+
+{% endblock %}
