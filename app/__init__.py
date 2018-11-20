@@ -6,8 +6,7 @@ from flask_moment import Moment
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from config import config
-from flask_mail import Message
-from threading import Thread
+
 
 bootstrap=Bootstrap()
 mail=Mail()
@@ -34,17 +33,6 @@ def create_app(config_name):
     app.register_blueprint(auth_blueprint,url_prefix='/auth')
 
     return app
-
-def send_async_email(app,msg):
-    with app.app_context():
-        mail.send(msg)
-
-def send_email(app,to,subject,template,**kwargs):
-    msg=Message(config['FLASKY_MAIL_SUBJECT_PREFIX'] + subject,sender=config['FLASKY_MAIL_SENDER'], recipients=[to])
-    msg.body=render_template(template + '.txt', **kwargs)
-    msg.html = render_template(template + '.html', **kwargs)
-    thr=Thread(target=send_async_email,args=[app,msg])
-    mail.send(msg)
 
 
 

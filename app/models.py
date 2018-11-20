@@ -38,19 +38,23 @@ class User(UserMixin,db.Model):
         return True
 
     def generate_confirmation_token(self,expiration=3600):
-        s=Serializer(current_app.conf['SECRET_KEY'],expiration)
-        return s.dump({'confirm':self.id})
+        s=Serializer(current_app.config['SECRET_KEY'],expiration)
+        return s.dumps({'confirm':self.id})
 
     def confirm(self,token):
-        s=Serializer(current_app.conf['SECRET_KEY'])
+        s=Serializer(current_app.config['SECRET_KEY'])
         try:
-            data=s.load(token)
-        except:
+            data=s.loads(token)
+        except Exception as e:
+            print(str(Exception))
+            print(str(e))
+            print(str(e.message))
             return False
         if data.get('confirm')!=self.id:
             return False
         self.confirmed=True
         db.session.add(self)
+        db.session.commit()
         return True
 
     def __repr__(self):
